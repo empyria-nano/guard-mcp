@@ -1,6 +1,6 @@
 # AGENTS.md
 
-MCP (Model Context Protocol) helpers for **Principia**, a nanoservice framework built
+MCP (Model Context Protocol) helpers for **Empyria**, a nanoservice framework built
 primarily on Bun: publishes Moleculer-shaped `{ name, actions }` service objects as MCP tools.
 
 ## The package split that matters here

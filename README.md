@@ -1,6 +1,6 @@
 # @empyria/mcp
 
-[MCP (Model Context Protocol)](https://modelcontextprotocol.io) helpers for **Principia**, a
+[MCP (Model Context Protocol)](https://modelcontextprotocol.io) helpers for **Empyria**, a
 nanoservice framework built primarily on Bun: publish a list of Moleculer-shaped services as
 MCP tools, with JSON Schema input validation via `@empyria/common`'s `createValidator` —
 no Zod, no Ajv, in our own code.
@@ -177,14 +177,14 @@ that same instance — including as `createMcpHandler`'s per-request factory for
 
 ## Modules
 
-| Module                                 | Purpose                                                                                                                                                                                                     |
-| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [lib/Server.js](./lib/Server.js)       | `createMcpServer` — publishes a list of Moleculer-shaped `{ name, actions }` services as MCP tools.                                                                                                         |
-| [lib/Http.js](./lib/Http.js)           | `createMcpHttpHandler` (runtime-agnostic Web-standard handler) and `serveMcpHttp` (Bun-only convenience, wraps `Bun.serve`).                                                                                |
-| [lib/Guard.js](./lib/Guard.js)         | `withMetaGuard` — optional per-service token protection; see above.                                                                                                                                         |
-| [lib/Client.js](./lib/Client.js)       | `createMcpClient`, `connectStdioClient`, `connectHttpClient` — client-side helpers.                                                                                                                         |
-| [lib/Gateway.js](./lib/Gateway.js)     | `createMcpGateway` — aggregates several already-connected upstream MCP clients into one server.                                                                                                             |
-| [lib/Validator.js](./lib/Validator.js) | `principiaJsonSchemaValidator` — adapts `@empyria/common`'s `createValidator` to the MCP SDK's pluggable JSON Schema validator interface, the same extension point its own `ajv`/`cf-worker` providers use. |
+| Module                                 | Purpose                                                                                                                                                                                                   |
+| -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [lib/Server.js](./lib/Server.js)       | `createMcpServer` — publishes a list of Moleculer-shaped `{ name, actions }` services as MCP tools.                                                                                                       |
+| [lib/Http.js](./lib/Http.js)           | `createMcpHttpHandler` (runtime-agnostic Web-standard handler) and `serveMcpHttp` (Bun-only convenience, wraps `Bun.serve`).                                                                              |
+| [lib/Guard.js](./lib/Guard.js)         | `withMetaGuard` — optional per-service token protection; see above.                                                                                                                                       |
+| [lib/Client.js](./lib/Client.js)       | `createMcpClient`, `connectStdioClient`, `connectHttpClient` — client-side helpers.                                                                                                                       |
+| [lib/Gateway.js](./lib/Gateway.js)     | `createMcpGateway` — aggregates several already-connected upstream MCP clients into one server.                                                                                                           |
+| [lib/Validator.js](./lib/Validator.js) | `empyriaJsonSchemaValidator` — adapts `@empyria/common`'s `createValidator` to the MCP SDK's pluggable JSON Schema validator interface, the same extension point its own `ajv`/`cf-worker` providers use. |
 
 There is no official JSON-Schema-only convenience API in `@modelcontextprotocol/server` — its
 `registerTool()` still needs a "Standard Schema" (what Zod produces). What _is_ official and
