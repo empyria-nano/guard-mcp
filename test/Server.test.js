@@ -1,7 +1,7 @@
 import { describe, test, expect } from 'bun:test'
 import { InMemoryTransport } from '@modelcontextprotocol/server'
 import { Client } from '@modelcontextprotocol/client'
-import { string, number } from '@principia/common'
+import { string, number } from '@empyria/common'
 import { createMcpServer } from '../lib/Server.js'
 
 /** Builds a server from `services` and a connected client pointed at it. */

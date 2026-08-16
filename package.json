@@ -1,12 +1,12 @@
 {
-	"name": "@principia/mcp",
+	"name": "@empyria/mcp",
 	"version": "0.1.0",
 	"description": "MCP (Model Context Protocol) helpers for the Principia nanoservice framework",
 	"license": "MIT",
 	"author": "Imre Fazekas <imre.fazekas@icloud.com>",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/imrefazekas/principia-guard-mcp.git"
+		"url": "git+https://github.com/imrefazekas/empyria-guard-mcp.git"
 	},
 	"type": "module",
 	"main": "./index.js",
@@ -24,10 +24,10 @@
 		"test:watch": "bun test --watch"
 	},
 	"dependencies": {
+		"@empyria/classification": "0.1.0",
+		"@empyria/common": "0.1.0",
 		"@modelcontextprotocol/client": "2.0.0",
-		"@modelcontextprotocol/server": "2.0.0",
-		"@principia/classification": "git@github.com:imrefazekas/principia-classification.git",
-		"@principia/common": "git@github.com:imrefazekas/principia-common.git"
+		"@modelcontextprotocol/server": "2.0.0"
 	},
 	"devDependencies": {
 		"oxfmt": "0.63.0",

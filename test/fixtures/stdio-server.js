@@ -2,7 +2,7 @@
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio'
 
 import { createMcpServer } from '../../lib/Server.js'
-import { string } from '@principia/common'
+import { string } from '@empyria/common'
 
 const EchoService = {
 	name: 'Echo',

@@ -1,8 +1,8 @@
-# @principia/mcp
+# @empyria/mcp
 
 [MCP (Model Context Protocol)](https://modelcontextprotocol.io) helpers for **Principia**, a
 nanoservice framework built primarily on Bun: publish a list of Moleculer-shaped services as
-MCP tools, with JSON Schema input validation via `@principia/common`'s `createValidator` —
+MCP tools, with JSON Schema input validation via `@empyria/common`'s `createValidator` —
 no Zod, no Ajv, in our own code.
 
 ## Requirements
@@ -10,21 +10,21 @@ no Zod, no Ajv, in our own code.
 - Bun `>=1.4.0` or Node.js `>=26`
 - Plain ESM, no build step, no TypeScript
 
-Both requirements come from [@principia/classification](https://github.com/imrefazekas/principia-classification)
-and [@principia/common](https://github.com/imrefazekas/principia-common), which this package
+Both requirements come from [@empyria/classification](https://github.com/imrefazekas/empyria-classification)
+and [@empyria/common](https://github.com/imrefazekas/empyria-common), which this package
 depends on and which use the native `Temporal` global for all date/time handling.
 
 ## Install
 
 ```bash
-bun add @principia/mcp
+bun add @empyria/mcp
 ```
 
 ## Usage
 
 ```js
-import { createMcpServer } from '@principia/mcp'
-import { string, number } from '@principia/common'
+import { createMcpServer } from '@empyria/mcp'
+import { string, number } from '@empyria/common'
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio'
 
 const WeatherService = {
@@ -51,7 +51,7 @@ await server.connect(new StdioServerTransport())
 
 Each action becomes an MCP tool named `"<service.name>.<actionName>"` — `Weather.getForecast`,
 `Weather.ping` above — mirroring Moleculer's own `service.action` naming. `params` are JSON
-schema property definitions built with `@principia/common`'s schema helpers (`string()`,
+schema property definitions built with `@empyria/common`'s schema helpers (`string()`,
 `number()`, `bool()`, `enumType()`, ...); incoming tool calls are validated against them before
 your handler runs, and validation failures are reported back to the MCP client as a normal
 tool-call error (`isError: true`) — your handler never sees invalid input. A handler's return
@@ -64,7 +64,7 @@ up to you. For stdio, see `@modelcontextprotocol/server/stdio`'s `StdioServerTra
 `serveStdio`. For HTTP, this package has its own helper:
 
 ```js
-import { serveMcpHttp } from '@principia/mcp'
+import { serveMcpHttp } from '@empyria/mcp'
 
 serveMcpHttp(
 	{ name: 'my-mcp-server', version: '1.0.0', services: [WeatherService] },
@@ -83,7 +83,7 @@ server (e.g. to mount inside your own `Bun.serve`, or another Fetch-based runtim
 ### Protecting services with a token
 
 A service can require a token by adding a `resolveToken` function — the MCP-side equivalent of
-`principia-guard-moleculer`'s `MetaGuard.middleware.js`, reusing the same shape as its
+`empyria-guard-moleculer`'s `MetaGuard.middleware.js`, reusing the same shape as its
 `getUser(ctx, action)`:
 
 ```js
@@ -114,7 +114,7 @@ none; a `resolveToken`-protected service called over stdio always rejects. Servi
 ### Connecting as a client
 
 ```js
-import { connectStdioClient, connectHttpClient } from '@principia/mcp'
+import { connectStdioClient, connectHttpClient } from '@empyria/mcp'
 
 const stdioClient = await connectStdioClient({
 	name: 'my-client',
@@ -141,7 +141,7 @@ connection — fewer config entries, one place to apply `lib/Guard.js`, etc. —
 a client and hand them to `createMcpGateway`:
 
 ```js
-import { connectStdioClient, connectHttpClient, createMcpGateway } from '@principia/mcp'
+import { connectStdioClient, connectHttpClient, createMcpGateway } from '@empyria/mcp'
 import { StdioServerTransport } from '@modelcontextprotocol/server/stdio'
 
 const weather = await connectStdioClient({
@@ -177,14 +177,14 @@ that same instance — including as `createMcpHandler`'s per-request factory for
 
 ## Modules
 
-| Module                                 | Purpose                                                                                                                                                                                                       |
-| -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [lib/Server.js](./lib/Server.js)       | `createMcpServer` — publishes a list of Moleculer-shaped `{ name, actions }` services as MCP tools.                                                                                                           |
-| [lib/Http.js](./lib/Http.js)           | `createMcpHttpHandler` (runtime-agnostic Web-standard handler) and `serveMcpHttp` (Bun-only convenience, wraps `Bun.serve`).                                                                                  |
-| [lib/Guard.js](./lib/Guard.js)         | `withMetaGuard` — optional per-service token protection; see above.                                                                                                                                           |
-| [lib/Client.js](./lib/Client.js)       | `createMcpClient`, `connectStdioClient`, `connectHttpClient` — client-side helpers.                                                                                                                           |
-| [lib/Gateway.js](./lib/Gateway.js)     | `createMcpGateway` — aggregates several already-connected upstream MCP clients into one server.                                                                                                               |
-| [lib/Validator.js](./lib/Validator.js) | `principiaJsonSchemaValidator` — adapts `@principia/common`'s `createValidator` to the MCP SDK's pluggable JSON Schema validator interface, the same extension point its own `ajv`/`cf-worker` providers use. |
+| Module                                 | Purpose                                                                                                                                                                                                     |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [lib/Server.js](./lib/Server.js)       | `createMcpServer` — publishes a list of Moleculer-shaped `{ name, actions }` services as MCP tools.                                                                                                         |
+| [lib/Http.js](./lib/Http.js)           | `createMcpHttpHandler` (runtime-agnostic Web-standard handler) and `serveMcpHttp` (Bun-only convenience, wraps `Bun.serve`).                                                                                |
+| [lib/Guard.js](./lib/Guard.js)         | `withMetaGuard` — optional per-service token protection; see above.                                                                                                                                         |
+| [lib/Client.js](./lib/Client.js)       | `createMcpClient`, `connectStdioClient`, `connectHttpClient` — client-side helpers.                                                                                                                         |
+| [lib/Gateway.js](./lib/Gateway.js)     | `createMcpGateway` — aggregates several already-connected upstream MCP clients into one server.                                                                                                             |
+| [lib/Validator.js](./lib/Validator.js) | `principiaJsonSchemaValidator` — adapts `@empyria/common`'s `createValidator` to the MCP SDK's pluggable JSON Schema validator interface, the same extension point its own `ajv`/`cf-worker` providers use. |
 
 There is no official JSON-Schema-only convenience API in `@modelcontextprotocol/server` — its
 `registerTool()` still needs a "Standard Schema" (what Zod produces). What _is_ official and

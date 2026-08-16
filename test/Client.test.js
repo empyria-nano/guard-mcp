@@ -1,5 +1,5 @@
 import { describe, test, expect, afterEach } from 'bun:test'
-import { string } from '@principia/common'
+import { string } from '@empyria/common'
 import { createMcpClient, connectStdioClient, connectHttpClient } from '../lib/Client.js'
 import { serveMcpHttp } from '../lib/Http.js'
 

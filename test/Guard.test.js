@@ -1,7 +1,7 @@
 import { describe, test, expect, afterEach } from 'bun:test'
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client'
 import { InMemoryTransport } from '@modelcontextprotocol/server'
-import { string } from '@principia/common'
+import { string } from '@empyria/common'
 import { createMcpServer } from '../lib/Server.js'
 import { serveMcpHttp } from '../lib/Http.js'
 import { withMetaGuard } from '../lib/Guard.js'

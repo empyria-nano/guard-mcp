@@ -1,6 +1,6 @@
 import { describe, test, expect, afterEach } from 'bun:test'
 import { Client, StreamableHTTPClientTransport } from '@modelcontextprotocol/client'
-import { string } from '@principia/common'
+import { string } from '@empyria/common'
 import { createMcpHttpHandler, serveMcpHttp } from '../lib/Http.js'
 
 let server

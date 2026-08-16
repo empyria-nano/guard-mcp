@@ -17,7 +17,7 @@ validatorProvider)`, a first-class adapter that wraps a plain JSON Schema object
   given a pluggable `{ getValidator(schema) => (input) => {valid, data, errorMessage} }`
   provider — the exact same extension point its own `./validators/ajv` and
   `./validators/cf-worker` subpath exports implement. `lib/Validator.js` is that same interface,
-  backed by `@principia/common`'s `createValidator` instead.
+  backed by `@empyria/common`'s `createValidator` instead.
 
 Don't add `zod` as a dependency of this repo's own code — we never import it. It's still an
 unavoidable transitive dependency of `@modelcontextprotocol/server` (used internally for the
@@ -64,7 +64,7 @@ put it short of smuggling it into every action's own `params`, which was deliber
 here (it would leak into every tool's public schema).
 
 `resolveToken(tokenKey, { service, action, extra })`'s signature intentionally mirrors
-`principia-guard-moleculer`'s `getUser(ctx, action)` — passing the service/action a guarded call
+`empyria-guard-moleculer`'s `getUser(ctx, action)` — passing the service/action a guarded call
 is targeting, the same way that file's `action.service.meta` does, for callers whose token
 resolution needs to vary per action.
 
@@ -94,8 +94,8 @@ close). Keep it that way; don't fold stdio/HTTP connection logic into `Gateway.j
 
 ## Runtime
 
-- Requires Bun `>=1.4.0` or Node.js `>=26`, inherited from `@principia/classification`'s use
-  of native `Temporal`. Both `@principia/classification` and `@principia/common` are **git
+- Requires Bun `>=1.4.0` or Node.js `>=26`, inherited from `@empyria/classification`'s use
+  of native `Temporal`. Both `@empyria/classification` and `@empyria/common` are **git
   dependencies** — this package only sees their pushed commits, not local working-tree changes
   in sibling repos.
 - Plain ESM, no TypeScript, no build step.

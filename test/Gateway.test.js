@@ -1,7 +1,7 @@
 import { describe, test, expect, afterEach } from 'bun:test'
 import { InMemoryTransport } from '@modelcontextprotocol/server'
 import { Client } from '@modelcontextprotocol/client'
-import { string } from '@principia/common'
+import { string } from '@empyria/common'
 import { createMcpServer } from '../lib/Server.js'
 import { createMcpGateway } from '../lib/Gateway.js'
 
