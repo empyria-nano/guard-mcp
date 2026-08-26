@@ -53,20 +53,22 @@ don't special-case the "no params" path back to an omitted `inputSchema`, it sil
 of whether it takes params). See the regression test in `test/Server.test.js` ("still receives a
 real extra context, not undefined").
 
-## Optional params (`defineActionSchema` in `lib/Server.js`)
+## Optional params (`defineSchema(params, { optional: true })`)
 
-`@empyria/common`'s own `defineSchema` has no concept of an optional property — every key it's
-given ends up in JSON Schema `required`, even one with its own `default` (that's deliberate on
-its side, and `test/Server.test.js`'s "a param with only a default..." test locks it in — don't
-"fix" it by inferring optional-from-default here). `lib/Server.js` doesn't call `defineSchema`
-directly for exactly this reason: its own local `defineActionSchema` builds the same shape, but
-a property is excluded from `required` when its own schema explicitly carries `optional: true`
-(stripped before the property is embedded — not a real JSON Schema keyword, never leaked into
-the tool's advertised inputSchema). Added 2026-08-26 for a real downstream need: a service
-wrapping an S3-shaped API had several genuinely optional/defaulted params (`contentType`,
-`expiresInSeconds`, ...) and `registerService`'s previous unconditional `defineSchema` call would
-have silently advertised all of them as required — a real API-contract regression, not a style
-preference. Usage: `params: { limit: { ...number(10), optional: true } }`.
+`@empyria/common`'s `defineSchema` (>= 0.1.4) accepts an `{ optional: true }` option: a property
+is excluded from JSON Schema `required` when its own schema carries `optional: true` (that
+marker is stripped before the property is embedded — not a real JSON Schema keyword, never
+leaked into the tool's advertised inputSchema). Without the option (the default, and every call
+elsewhere in the Empyria ecosystem — restate, moleculer), behavior is unchanged from before this
+existed: every declared property is required, even one with its own `default`.
+`registerService` in `lib/Server.js` always passes `{ optional: true }`, so any action's `params`
+here can mark a field optional this way. Added upstream (not as a local derivative in this repo —
+see git history for that discarded first attempt and why) 2026-08-26 for a real downstream need:
+a service wrapping an S3-shaped API had several genuinely optional/defaulted params
+(`contentType`, `expiresInSeconds`, ...) and `registerService`'s previous unconditional
+`defineSchema` call would have silently advertised all of them as required — a real API-contract
+regression, not a style preference. Usage: `params: { limit: { ...number(10), optional: true } }`.
+Requires `@empyria/common` >= 0.1.4 — this package's own `package.json` is pinned there or later.
 
 ## Auth (`lib/Guard.js`)
 
