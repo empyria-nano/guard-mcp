@@ -53,6 +53,21 @@ don't special-case the "no params" path back to an omitted `inputSchema`, it sil
 of whether it takes params). See the regression test in `test/Server.test.js` ("still receives a
 real extra context, not undefined").
 
+## Optional params (`defineActionSchema` in `lib/Server.js`)
+
+`@empyria/common`'s own `defineSchema` has no concept of an optional property — every key it's
+given ends up in JSON Schema `required`, even one with its own `default` (that's deliberate on
+its side, and `test/Server.test.js`'s "a param with only a default..." test locks it in — don't
+"fix" it by inferring optional-from-default here). `lib/Server.js` doesn't call `defineSchema`
+directly for exactly this reason: its own local `defineActionSchema` builds the same shape, but
+a property is excluded from `required` when its own schema explicitly carries `optional: true`
+(stripped before the property is embedded — not a real JSON Schema keyword, never leaked into
+the tool's advertised inputSchema). Added 2026-08-26 for a real downstream need: a service
+wrapping an S3-shaped API had several genuinely optional/defaulted params (`contentType`,
+`expiresInSeconds`, ...) and `registerService`'s previous unconditional `defineSchema` call would
+have silently advertised all of them as required — a real API-contract regression, not a style
+preference. Usage: `params: { limit: { ...number(10), optional: true } }`.
+
 ## Auth (`lib/Guard.js`)
 
 `extra.http.req` (the raw `Request`, with real header access via `.headers.get(name)`) is

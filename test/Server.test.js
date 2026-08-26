@@ -169,4 +169,81 @@ describe('createMcpServer', () => {
 			}),
 		).toThrow(/handler/)
 	})
+
+	test('a param marked optional: true is excluded from required', async () => {
+		const Service = {
+			name: 'Svc',
+			actions: {
+				search: {
+					params: { query: string(), limit: { ...number(10), optional: true } },
+					handler: async (params) => params,
+				},
+			},
+		}
+		const { client } = await connected([Service])
+		const { tools } = await client.listTools()
+		expect(tools[0].inputSchema.required).toEqual(['query'])
+	})
+
+	test('the optional marker itself is stripped, never leaked into the advertised schema', async () => {
+		const Service = {
+			name: 'Svc',
+			actions: {
+				search: {
+					params: { limit: { ...number(10), optional: true } },
+					handler: async (params) => params,
+				},
+			},
+		}
+		const { client } = await connected([Service])
+		const { tools } = await client.listTools()
+		expect(tools[0].inputSchema.properties.limit).toEqual({ type: 'number', default: 10 })
+	})
+
+	test('a call omitting an optional param still succeeds, and its default is applied by the validator', async () => {
+		const Service = {
+			name: 'Svc',
+			actions: {
+				search: {
+					params: { query: string(), limit: { ...number(10), optional: true } },
+					handler: async (params) => params,
+				},
+			},
+		}
+		const { client } = await connected([Service])
+		const result = await client.callTool({ name: 'Svc.search', arguments: { query: 'x' } })
+		expect(result.isError).toBeFalsy()
+		expect(JSON.parse(result.content[0].text)).toEqual({ query: 'x', limit: 10 })
+	})
+
+	test('a call omitting an optional param with no default leaves it absent', async () => {
+		const Service = {
+			name: 'Svc',
+			actions: {
+				search: {
+					params: { query: string(), tag: { ...string(), optional: true } },
+					handler: async (params) => params,
+				},
+			},
+		}
+		const { client } = await connected([Service])
+		const result = await client.callTool({ name: 'Svc.search', arguments: { query: 'x' } })
+		expect(result.isError).toBeFalsy()
+		expect(JSON.parse(result.content[0].text)).toEqual({ query: 'x' })
+	})
+
+	test("a param with only a default (no explicit optional) is still required — unchanged from @empyria/common's own defineSchema", async () => {
+		const Service = {
+			name: 'Svc',
+			actions: {
+				search: {
+					params: { limit: number(10) },
+					handler: async (params) => params,
+				},
+			},
+		}
+		const { client } = await connected([Service])
+		const { tools } = await client.listTools()
+		expect(tools[0].inputSchema.required).toEqual(['limit'])
+	})
 })
