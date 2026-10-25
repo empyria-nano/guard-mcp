@@ -1,6 +1,6 @@
 {
 	"name": "@empyria/mcp",
-	"version": "0.1.26",
+	"version": "0.1.27",
 	"description": "MCP (Model Context Protocol) helpers for the Empyria nanoservice framework",
 	"license": "MIT",
 	"author": "Imre Fazekas <imre.fazekas@icloud.com>",
@@ -24,10 +24,10 @@
 		"test:watch": "bun test --watch"
 	},
 	"dependencies": {
-		"@empyria/classification": "0.1.12",
-		"@empyria/common": "0.3.15",
-		"@modelcontextprotocol/client": "2.3.1",
-		"@modelcontextprotocol/server": "2.3.1"
+		"@empyria/classification": "0.1.13",
+		"@empyria/common": "0.3.16",
+		"@modelcontextprotocol/client": "2.4.0",
+		"@modelcontextprotocol/server": "2.4.0"
 	},
 	"devDependencies": {
 		"oxfmt": "0.74.0",
